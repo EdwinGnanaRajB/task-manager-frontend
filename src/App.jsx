@@ -1,7 +1,10 @@
+import Login from "./pages/Login";
+
 function App() {
   return (
     <div>
-      <h1>Task Manager App 🚀</h1>
+      <h1>Task Manager</h1>
+      <Login />
     </div>
   );
 }
