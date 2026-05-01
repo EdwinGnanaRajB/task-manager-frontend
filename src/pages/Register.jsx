@@ -3,21 +3,23 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-function Login() {
+function Register() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      await axios.post("http://localhost:5000/api/auth/register", {
+        name,
         email,
         password,
       });
 
-      localStorage.setItem("token", res.data.token);
-      window.location.href = "/dashboard";
+      alert("Registered successfully 🎉");
+      window.location.href = "/";
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      alert(err.response?.data?.message || "Register failed");
     }
   };
 
@@ -30,8 +32,16 @@ function Login() {
         className="backdrop-blur-lg bg-white/20 dark:bg-gray-800/40 p-6 md:p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-white/30"
       >
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-white">
-          Welcome Back 👋
+          Create Account ✨
         </h2>
+
+        <input
+          type="text"
+          placeholder="Name"
+          className="w-full p-3 mb-4 rounded bg-white/30 text-black placeholder-gray-600 
+                     dark:bg-gray-700 dark:text-white dark:placeholder-gray-300"
+          onChange={(e) => setName(e.target.value)}
+        />
 
         <input
           type="email"
@@ -50,16 +60,16 @@ function Login() {
         />
 
         <button
-          onClick={handleLogin}
+          onClick={handleRegister}
           className="w-full bg-white text-indigo-600 py-3 rounded-lg font-semibold hover:scale-105 transition"
         >
-          Login
+          Register
         </button>
 
         <p className="text-center text-white mt-4 text-sm">
-          Don’t have an account?{" "}
-          <Link to="/register" className="underline">
-            Register
+          Already have an account?{" "}
+          <Link to="/" className="underline">
+            Login
           </Link>
         </p>
       </motion.div>
@@ -67,4 +77,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
