@@ -1,4 +1,16 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌈 Animated background */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-bg {
+  background: linear-gradient(-45deg, #4f46e5, #9333ea, #06b6d4, #3b82f6);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
 }
