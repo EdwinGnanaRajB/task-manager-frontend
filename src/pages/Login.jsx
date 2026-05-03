@@ -8,20 +8,22 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
-    try {
-      const res = await axios.post(`${API}/api/auth/login`, {
-        email,
-        password,
-      });
+  const navigate = useNavigate();
 
-      localStorage.setItem("token", res.data.token);
-      window.location.href = "/dashboard";
-    } catch (err) {
-      console.log(err);
-      alert(err?.response?.data?.message || "Login failed");
-    }
-  };
+  const handleLogin = async () => {
+   try {
+    const res = await axios.post(`${API}/api/auth/login`, {
+      email,
+      password,
+    });
+
+    localStorage.setItem("token", res.data.token);
+
+    navigate("/dashboard");   // ✅ IMPORTANT
+  } catch (err) {
+    alert("Login failed");
+  }
+};
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
