@@ -16,47 +16,60 @@ function Login() {
 
       localStorage.setItem("token", res.data.token);
       window.location.href = "/dashboard";
-    } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+    } catch {
+      alert("Login failed");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center animated-bg px-4">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
 
+      {/* 🎥 VIDEO BACKGROUND */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute w-full h-full object-cover"
+      >
+        <source src="/bg.mp4" type="video/mp4" />
+      </video>
+
+      {/* 🌫 DARK OVERLAY */}
+      <div className="absolute w-full h-full bg-black/60 backdrop-blur-sm"></div>
+
+      {/* 🧊 GLASS CARD */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        className="backdrop-blur-lg bg-white/20 dark:bg-gray-800/40 p-6 md:p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-white/30"
+        className="relative z-10 backdrop-blur-xl bg-white/10 p-8 rounded-2xl shadow-2xl w-80 border border-white/20"
       >
-        <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-white">
+        <h2 className="text-2xl font-bold text-white mb-6 text-center">
           Welcome Back 👋
         </h2>
 
         <input
           type="email"
           placeholder="Email"
-          className="w-full p-3 mb-4 rounded bg-white/30 text-black placeholder-gray-600 
-                     dark:bg-gray-700 dark:text-white dark:placeholder-gray-300"
+          className="w-full p-3 mb-4 rounded bg-white/20 text-white placeholder-gray-300"
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="w-full p-3 mb-6 rounded bg-white/30 text-black placeholder-gray-600 
-                     dark:bg-gray-700 dark:text-white dark:placeholder-gray-300"
+          className="w-full p-3 mb-6 rounded bg-white/20 text-white placeholder-gray-300"
           onChange={(e) => setPassword(e.target.value)}
         />
 
         <button
           onClick={handleLogin}
-          className="w-full bg-white text-indigo-600 py-3 rounded-lg font-semibold hover:scale-105 transition"
+          className="w-full bg-white text-indigo-600 py-3 rounded-lg font-semibold"
         >
           Login
         </button>
 
-        <p className="text-center text-white mt-4 text-sm">
+        <p className="text-white text-center mt-4 text-sm">
           Don’t have an account?{" "}
           <Link to="/register" className="underline">
             Register
