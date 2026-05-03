@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
+import API from "../services/api";
 
 function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -29,7 +30,7 @@ function Dashboard() {
 
   // 📥 Fetch
   const fetchTasks = async () => {
-    const res = await axios.get("http://localhost:5000/api/tasks", {
+    const res = await axios.post(`${API}/api/auth/login`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     setTasks(res.data);
