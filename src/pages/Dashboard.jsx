@@ -14,7 +14,7 @@ function Dashboard() {
 
   const token = localStorage.getItem("token");
 
-  // 🌙 Load dark mode
+  // 🌙 Dark mode
   useEffect(() => {
     const saved = localStorage.getItem("darkMode");
     if (saved === "true") {
@@ -28,24 +28,28 @@ function Dashboard() {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
 
-  // 📥 Fetch
+  // ✅ FIX 1 — CORRECT FETCH
   const fetchTasks = async () => {
-    const res = await axios.post(`${API}/api/auth/login`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setTasks(res.data);
+    try {
+      const res = await axios.get(`${API}/api/tasks`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setTasks(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
     fetchTasks();
   }, []);
 
-  // ➕ Add
+  // ✅ FIX 2 — USE SAME API (NO LOCALHOST)
   const addTask = async () => {
     if (!title) return toast.error("Enter task");
 
     await axios.post(
-      "http://localhost:5000/api/tasks",
+      `${API}/api/tasks`,
       { title },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -55,9 +59,8 @@ function Dashboard() {
     fetchTasks();
   };
 
-  // ❌ Delete
   const deleteTask = async (id) => {
-    await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
+    await axios.delete(`${API}/api/tasks/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -65,10 +68,9 @@ function Dashboard() {
     fetchTasks();
   };
 
-  // 🔄 Toggle
   const toggleStatus = async (task) => {
     await axios.put(
-      `http://localhost:5000/api/tasks/${task._id}`,
+      `${API}/api/tasks/${task._id}`,
       {
         status: task.status === "completed" ? "pending" : "completed",
       },
@@ -79,10 +81,9 @@ function Dashboard() {
     fetchTasks();
   };
 
-  // ✏️ Update
   const updateTask = async () => {
     await axios.put(
-      `http://localhost:5000/api/tasks/${editTask._id}`,
+      `${API}/api/tasks/${editTask._id}`,
       { title: editTask.title },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -92,7 +93,6 @@ function Dashboard() {
     fetchTasks();
   };
 
-  // 🔍 Filter
   const filtered = tasks.filter(
     (t) =>
       t.title.toLowerCase().includes(search.toLowerCase()) &&
@@ -100,35 +100,26 @@ function Dashboard() {
   );
 
   return (
-    <div className="relative min-h-screen overflow-hidden transition-all duration-500">
+    <div className="relative min-h-screen overflow-hidden text-white">
 
-      {/* 🎥 VIDEO BACKGROUND */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute w-full h-full object-cover"
-      >
+      {/* 🎥 VIDEO */}
+      <video autoPlay loop muted className="absolute w-full h-full object-cover">
         <source src="/bg.mp4" type="video/mp4" />
       </video>
 
-      {/* 🌫 OVERLAY (dark mode visible here) */}
-      <div className="absolute w-full h-full bg-black/50 dark:bg-black/80 backdrop-blur-sm"></div>
+      <div className="absolute w-full h-full bg-black/50 dark:bg-black/80"></div>
 
-      {/* CONTENT */}
-      <div className="relative z-10 p-4 md:p-8 text-white dark:text-gray-200">
-
+      <div className="relative z-10 p-6">
         <Toaster />
 
         {/* HEADER */}
-        <div className="flex justify-between mb-6 flex-wrap gap-3">
+        <div className="flex justify-between mb-6">
           <h1 className="text-2xl font-bold">TASK BOARD</h1>
 
           <div className="flex gap-2">
             <button
               onClick={() => setDark(!dark)}
-              className="bg-white/20 dark:bg-gray-700 px-3 py-1 rounded transition"
+              className="bg-white/20 px-3 py-1 rounded"
             >
               {dark ? "☀️ Light" : "🌙 Dark"}
             </button>
@@ -146,15 +137,13 @@ function Dashboard() {
         </div>
 
         {/* ADD + SEARCH */}
-        <div className="bg-white/10 dark:bg-gray-900/40 backdrop-blur-xl border border-white/20 p-5 rounded-xl mb-6">
-
+        <div className="bg-white/10 p-5 rounded-xl mb-6">
           <div className="flex gap-3 mb-4">
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Add task..."
-              className="flex-1 p-3 rounded bg-white/20 text-white placeholder-gray-300 
-                         dark:bg-gray-800 dark:text-white"
+              className="flex-1 p-3 rounded bg-white/20"
             />
             <button onClick={addTask} className="bg-indigo-500 px-5 rounded">
               Add
@@ -165,13 +154,12 @@ function Dashboard() {
             <input
               placeholder="Search..."
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 p-2 rounded bg-white/20 text-white placeholder-gray-300 
-                         dark:bg-gray-800 dark:text-white"
+              className="flex-1 p-2 rounded bg-white/20"
             />
 
             <select
               onChange={(e) => setFilter(e.target.value)}
-              className="p-2 rounded bg-white/20 text-white dark:bg-gray-800"
+              className="p-2 rounded bg-white/20"
             >
               <option value="all">All</option>
               <option value="completed">Done</option>
@@ -180,14 +168,14 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* TASKS */}
+        {/* TASK LIST */}
         <div className="space-y-3">
           {filtered.map((task) => (
             <motion.div
               key={task._id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white/10 dark:bg-gray-900/40 backdrop-blur-xl border border-white/20 p-4 rounded-xl flex justify-between"
+              className="bg-white/10 p-4 rounded-xl flex justify-between"
             >
               <div>
                 <h3>{task.title}</h3>
@@ -202,32 +190,6 @@ function Dashboard() {
             </motion.div>
           ))}
         </div>
-
-        {/* MODAL */}
-        {editTask && (
-          <div className="fixed inset-0 bg-black/60 flex justify-center items-center">
-            <div className="bg-white dark:bg-gray-800 p-5 rounded w-80 text-black dark:text-white">
-              <input
-                value={editTask.title}
-                onChange={(e) =>
-                  setEditTask({ ...editTask, title: e.target.value })
-                }
-                className="w-full p-2 mb-4 rounded bg-gray-100 dark:bg-gray-700"
-              />
-
-              <div className="flex justify-end gap-2">
-                <button onClick={() => setEditTask(null)}>Cancel</button>
-                <button
-                  onClick={updateTask}
-                  className="bg-indigo-500 text-white px-3 py-1 rounded"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
       </div>
     </div>
   );
