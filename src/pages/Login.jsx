@@ -45,7 +45,7 @@ function Login() {
         className="relative z-10 backdrop-blur-xl bg-white/10 p-8 rounded-2xl shadow-2xl w-80 border border-white/20"
       >
         <h2 className="text-2xl font-bold text-white mb-6 text-center">
-          Welcome Back 👋
+          Hello Buddy 👋
         </h2>
 
         <input

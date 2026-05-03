@@ -122,7 +122,7 @@ function Dashboard() {
 
         {/* HEADER */}
         <div className="flex justify-between mb-6 flex-wrap gap-3">
-          <h1 className="text-2xl font-bold">Dashboard 🚀</h1>
+          <h1 className="text-2xl font-bold">TASK BOARD</h1>
 
           <div className="flex gap-2">
             <button
