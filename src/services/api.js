@@ -1,3 +1,4 @@
-const API = import.meta.env.VITE_API_URL;
+const API = "https://task-manager-backend-o7qs.onrender.com";
+
 
 export default API;
