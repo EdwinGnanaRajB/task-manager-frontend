@@ -10,14 +10,14 @@ function Register() {
 
   const handleRegister = async () => {
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post("https://task-manager-backend-o7qs.onrender.com/api/auth/register", {
         name,
         email,
         password,
       });
 
       alert("Registered successfully 🎉");
-      window.location.href = "/"
+      window.location.href = "/";
     } catch {
       alert("Register failed");
     }
