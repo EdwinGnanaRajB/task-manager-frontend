@@ -10,7 +10,7 @@ function Register() {
 
   const handleRegister = async () => {
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
+      await axios.post("https://task-manager-backend.onrender.com/api/auth/register", {
         name,
         email,
         password,
